@@ -1,0 +1,879 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<style type="text/css">
+    table {
+        width: 700px;
+        border: double;
+    }
+
+    th {
+        width: 100px;
+    }
+
+    td {
+        border: double;
+        width: 100px;
+    }
+
+    input {
+        width: 100px;
+    }
+
+    .button {
+        display: inline-block;
+        outline: none;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        padding: .4em 1.1em .4em;
+        color: #fef4e9;
+        border: solid 1px #006fb9;
+        background: #1276bb;
+    }
+
+
+  #cssmenu {
+  width: 250px;
+  max-height:10px;
+}
+
+
+#cssmenu > ul > li > a {
+  padding-right: 40px;
+  font-size: 25px;
+  font-weight: bold;
+  display: block;
+  background: grey;
+  color: #ffffff;
+  border-bottom: 1px solid grey;
+  text-transform: uppercase;
+  position: relative;
+}
+
+
+#cssmenu > ul > li > a > span {
+  background:black;
+  padding: 10px;
+  display: block;
+  font-size: 13px;
+  font-weight: 300;
+}
+#cssmenu > ul > li > a:hover {
+  text-decoration: none;
+}
+#cssmenu > ul > li.active {
+  border-bottom: none;
+}
+#cssmenu > ul > li.active > a {
+  color: #fff;
+}
+#cssmenu > ul > li.active > a span {
+  background: black;
+}
+#cssmenu span.cnt {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+  padding: 0;
+  margin: 0;
+  background: none;
+}
+
+  #cssmenu ul ul {
+  display: none;
+}
+#cssmenu ul ul li {
+  border: 1px solid #e0e0e0;
+  border-top: 0;
+}
+#cssmenu ul ul a {
+  padding: 10px;
+  display: block;
+  color: black;
+  font-size: 13px;
+}
+#cssmenu ul ul a:hover {
+  color: Gray;
+}
+#cssmenu ul ul li.odd {
+  background: #f4f4f4;
+}
+#cssmenu ul ul li.even {
+  background: #fff;
+}
+/*#tbl{
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #999;
+  padding: 0.5rem;
+  text-align: left;
+}*/
+    #border {
+        border:1px solid #ddd;
+        width:90%;
+        padding-left:22px;
+        height:500px;
+        
+    }
+    .tickImg{
+        background:url(tick.png) no-repeat ;
+    }
+    #rightPanel {
+        color:black;font-size:20px;float:right;padding-right:22px;
+    }
+    .quote {
+        display:block;
+        padding:12px;
+        border:1px solid #b0ebff;
+        margin:5px 0 0 0;
+        width:147px;
+       margin-left:681px;
+        margin-top:-54px;
+        border-radius:12px;
+    }
+    .twitter {
+       
+        margin-left:657px;
+    }
+    .contactBorder {
+         border:1px solid #ddd;
+         border-radius:4px;
+    }
+   #mainContainer {
+	line-height: 20px;
+    background-color: rgba(0,50,94,0.2);
+	margin: 20px auto;
+	padding-bottom:20px;
+    padding-left:28px;
+    padding-top:20px;
+	-moz-border-radius: 15px;
+	border-style: dashed;
+	border-color: rgb(68, 110, 187);
+	border-radius: 2px 5px 2px 5px / 5px 2px 5px 2px;
+	border-radius: 2px;
+	border-radius: 2px 5px / 5px;
+	box-shadow: 0 5px 10px 5px rgba(0,0,0,0.2);
+}
+ 
+
+</style>
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+<script src="~/Scripts/knockout-3.2.0.js"></script>
+<a href="~/Scripts/jquery-1.9.1.min.map"></a>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script>
+    $(document).ready(function () {
+        $("#addNew").click(function () {
+            $("#frm").show();
+        });
+    });
+    $(document).ready(function () {
+
+        $('#cssmenu > ul > li ul').each(function (index, e) {
+            var count = $(e).find('li').length;
+            var content = '<span class=\"cnt\">' + count + '</span>';
+            $(e).closest('li').children('a').append(content);
+        });
+        //$('#cssmenu ul ul li:odd').addClass('odd');
+        //$('#cssmenu ul ul li:even').addClass('even');
+        $('#cssmenu > ul > li > a').click(function () {
+            $('#cssmenu li').removeClass('active');
+            $(this).closest('li').addClass('active');
+            var checkElement = $(this).next();
+            if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+                $(this).closest('li').removeClass('active');
+                checkElement.slideUp('normal');
+            }
+            if ((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+                $('#cssmenu ul ul:visible').slideUp('normal');
+                checkElement.slideDown('normal');
+            }
+            if ($(this).closest('li').find('ul').children().length == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+
+    //$(document).ready(function () {
+
+
+    //    $('#saveBtn').click(function () {
+    //        var valid = true,
+    //         message = ""
+          
+
+    //        if ($('#txtename1').val() == '') {
+    //            message = "please enter  Name\n";
+    //            valid = false;
+    //        }
+
+    //        if ($('#txtdname1').val() == '') {
+    //            message += "Please enter DepartMentName \n";
+    //            valid = false;
+    //        }
+    //        if ($('#txtdesig1').val() == '') {
+    //            message += "Please enter Desig \n";
+    //            valid = false;
+    //        }
+    //        if ($('#txtsal1').val() == '') {
+    //            message += "Please enter Salary \n";
+    //            valid = false;
+    //        }
+    //        if (!valid) {
+    //            alert(message);
+    //            return false;
+    //        }
+    //    });
+    //});
+</script>
+
+@*<div style="margin-top:15px;margin-left:20px">
+
+
+@Html.ActionLink("Add New","", new { },new { @class = "button",@id="btn" })
+
+</div>*@
+<div>
+    <nav class="navbar navbar-inverse" >
+          <a class="navbar-brand" href="/" style="cursor:pointer">Home</a>
+         <a class="navbar-brand" data-bind="click:EmpViewModel.ForCarrier" style="cursor:pointer">Careers</a>
+         <a class="navbar-brand" data-bind="click:EmpViewModel.ForAbout" style="cursor:pointer">About Us</a>
+         <a class="navbar-brand" data-bind="click:EmpViewModel.ForContact" style="cursor:pointer">Contact</a>
+         <a class="navbar-brand" style="float:right">Welcome Logged User!!</a>
+</nav>
+    
+</div>
+
+<div id='cssmenu'>
+<ul>
+   <li class='active'><a href='/'><span>Home</span></a></li>
+   <li class='has-sub'><a href='#'><span>Products</span></a>
+      <ul>
+         <li><a data-bind="click:EmpViewModel.Widgets" style="cursor:pointer"><span>Widgets</span></a></li> 
+      </ul>
+   </li>
+   <li class='has-sub'><a href='#'><span>Company</span></a>
+      <ul>
+         <li><a data-bind="click:EmpViewModel.ForAbout" style="cursor:pointer" >About</a></li>
+          <li><a data-bind="click:EmpViewModel.ForCarrier" style="cursor:pointer" ><span>Carrier</span></a></li>
+      </ul>
+   </li>
+   <li class='last'><a data-bind="click:EmpViewModel.ForContact" style="cursor:pointer"><span>Contact</span></a></li>
+</ul>
+</div>
+ 
+<div id="Complete">
+<input id="addNew" type="button" class="button" value="Add New" style="margin-left: 780px;margin-top:30px;" />
+<br />
+<br />
+
+<div id="frm" style="display:none;margin-left:740px;">
+
+ EmpName: 
+   <input type="text"  data-bind="value: $data.EmpName" id="txtename1" style="margin-left:8px;border-radius:2px"  /> <br /> 
+  <br />
+         DeptName: 
+  <input type="text" data-bind="value: $data.DeptName" id="txtdname1" style="margin-left:8px;border-radius:2px"  />
+    <br />
+  
+        <br />
+    Designation:  
+   <input type="text" data-bind="value: $data.Designation" id="txtdesig1" style="margin-left:1px;border-radius:2px"  />
+     <br />
+      
+    <br />
+        Salary: <input type="text" data-bind="value: $data.Salary" id="txtsal1" style="margin-left:37px;border-radius:2px"  />
+         <br />
+    <br />
+  
+        <input type="button" id="saveBtn" class="button" value="Save" data-bind="click: EmpViewModel.saveRecord" style="margin-left:-2px" />
+     <input type="button" id="cancelBtn" class="button" value="Cancel" data-bind="click: EmpViewModel.Cancel" style="margin-left:12px" />
+    </div>
+    <br />
+
+<!--Paging-->
+<div id="dvpaging" style="margin-left:750px;">
+<span>Items to be displayed in table:</span>
+    <select id="lstpagrec" data-bind="value: pagesize">
+        <option value="4">4</option>
+        <option value="8">8</option>
+        <option value="12">12</option>
+        <option value="complete">Complete</option>
+    </select>
+</div>
+
+
+@*//data-bind="template: { name: currentTemplate, foreach: Employees }"*@
+
+
+<table id="tbldata" style="margin-top: 40px;margin-left:550px">
+    <thead>
+     
+       <tr>
+            <th>EmpNo
+            </th>
+            <th>EmpName
+            </th>
+            <th>DeptName
+            </th>
+            <th>Desigation
+            </th>
+            <th>Salary
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody  data-bind="template: { name: currentTemplate, foreach: pagineationEmp }">
+        <tr>
+     <td><span data-bind="text: EmpNo"></span></td>
+    <td><span data-bind="text: EmpName"></span></td>
+    <td><span data-bind="text: DeptName"></span></td>
+    <td><span data-bind="text: Designation"></span></td>
+    <td colspan="5"><span data-bind="text: Salary"></span></td>
+</tr>
+    </tbody> 
+</table>
+
+
+@* style="margin-left:550px;margin-top:10px"*@
+<ul class="pager" style="margin-left:1000px">
+
+
+<li><a class="previous" href="#" title="Previous" data-bind="click: previouspage" >Previous</a></li>
+ <li><a class="next" href="#" title="Next" data-bind="click:nextpage">Next</a></li>
+
+
+    </ul>
+
+    
+</div>
+<script type="text/html" id="readonlyTemplate" class="table table-hover table-bordered">
+    <tr>
+        <td>
+            <span data-bind="text: EmpNo"></span>
+        </td>
+        <td>
+            <span data-bind="text: EmpName"></span>
+        </td>
+        <td>
+            <span data-bind="text: DeptName"></span>
+        </td>
+        <td>
+            <span data-bind="text: Designation"></span>
+        </td>
+        <td>
+            <span data-bind="text: Salary"></span>
+        </td>
+        <td>
+            <input type="button" class="button" value="Edit" data-bind="click: function () { EmpViewModel.editTemplate($data);}" />
+        </td>
+        <td>
+            <input type="button" class="button" value="Delete" data-bind="click: function () { EmpViewModel.deleteEmployee($data); }" />
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="editTemplate">
+    <tr>
+        <td>
+            <input type="text" data-bind="value: $data.EmpNo" id="txteno" disabled="disabled" />
+        </td>
+        <td>
+            <input type="text" data-bind="value: $data.EmpName" id="txtename" />
+        </td>
+        <td>
+            <input type="text" data-bind="value: $data.DeptName" id="txtdname" />
+        </td>
+        <td>
+            <input type="text" data-bind="value: $data.Designation" id="txtdesig" />
+        </td>
+        <td>
+            <input type="text" data-bind="value: $data.Salary" id="txtsal" />
+        </td>
+        <td>
+            <input type="button" class="button" value="Save" data-bind="click: EmpViewModel.saveEmployee" />
+        </td>
+        <td>
+            <input type="button" class="button" value="Cancel" data-bind="click: function () { EmpViewModel.reset(); }" />
+        </td>
+    </tr>
+</script>
+
+
+<!--For Contacts -->
+<div id="forContact"  style="display:none;margin-left:500px">
+    <h2><i>Contact Us</i></h2>
+    <img src="~/br_down.png" />  <h4  style="color:rgb(68, 110, 187)">Telephone & Email</h4>
+    <h5>Tel. +9062573</h5>
+    <h5>Email. <a href="#">info@wiz.com</a></h5>
+    <br />
+    <img src="~/br_down.png" /> <h4 style="color:rgb(68, 110, 187)">Address & Location</h4>
+     <h5>Cooperative Pvt. Ltd</h5>
+     <h5>Central Park</h5>
+     <h5>ZMV</h5>
+
+    <br />
+    <h5 style="margin-left:-93px">FSI Company No. 546373, <a href="#">company@zmv.co.in</a></h5>
+    <div class="form-group  contactBorder" id="mainContainer" style="margin-left:300px;margin-top:-311px;width:511px"   >
+        Name:<input class="form-control" type="text" id="txtName" data-bind="value: $data.Name" placeholder="Name" style="width:54%" /><br /><br />
+        Email: <input class="form-control" type="text" id="txtEmail" data-bind="value: $data.Email" placeholder="Email" style="width:54%" /><br /><br />
+        Message:<textarea class="form-control" id="sendmessage" name="sender_message" data-bind="value: $data.Message" placeholder="Message" style="width:54%;resize:none"></textarea><br /><br />
+        <input type="button" id="message" class="button" value="Save" data-bind="click:EmpViewModel.sendMessage" style="margin-left:53px" />
+    </div>
+</div>
+<!-- End For Contacts -->
+<!-- For About-->
+<div id="forAbout"  style="display:none;margin-left:500px;">
+   <div>
+       <h3>Know About Knockout.js...</h3>
+       <ol>
+           <li>Knockout is a JavaScript library that helps you to create rich, responsive display and editor user interfaces with a clean underlying data model. Any time you have sections of UI that update dynamically (e.g., changing depending on the user’s actions or when an external data source changes), KO can help you implement it more simply and maintainably
+               <h4>Headline features:</h4>
+
+               <h5>Elegant dependency tracking - automatically updates the right parts of your UI whenever your data model changes.</h5>
+<h5>Declarative bindings - a simple and obvious way to connect parts of your UI to your data model. You can construct a complex dynamic UIs easily using arbitrarily nested binding contexts.</h5>
+<h5>Trivially extensible - implement custom behaviors as new declarative bindings for easy reuse in just a few lines of code.</h5>
+              </li>
+            <li><h4>OK, how do you use it?</h4>
+                 The quickest and most fun way to get started is by working through the interactive tutorials. Once you’ve got to grips with the basics, explore the live examples and then have a go with it in your own project.
+            </li>
+            <li> <h4>Is KO intended to compete with jQuery (or Prototype, etc.) or work with it?</h4>Everyone loves jQuery! It’s an outstanding replacement for the clunky, inconsistent DOM API we had to put up with in the past. jQuery is an excellent low-level way to manipulate elements and event handlers in a web page. KO solves a different problem.</li>
+            <li><h4>How is Knockout different?</h4>
+                t’s much easier with KO. It lets you scale up in complexity without fear of introducing inconsistencies. Just represent your items as a JavaScript array, and then use a foreach binding to transform this array into a TABLE or set of DIVs. Whenever the array changes, the UI changes to match (you don’t have to figure out how to inject new TRs or where to inject them).
+            </li>
+       </ol>
+   </div>
+</div>
+<!--For About-->
+
+<!-- For Wdget Tab-->
+<div id="todoapp" style="margin-left:700px;display:none;">
+    <header>
+        <script src="~/jquery-1.9.1.js"></script>
+        <script src="~/knockout-3.2.0.js"></script>
+        <h3>Add ToDo List </h3>
+      <input id="new-todo" type="text" placeholder="What needs to be done?" data-bind="value:inputTitle,event: { keyup: createOnEnter}"/>
+    </header>
+
+    <section id="main" style="display: block;">
+      <div data-bind="visible:todos().length>0">
+          <input id="toggle-all" type="checkbox" data-bind="checked:markAll"/>
+          <label for="toggle-all">Mark all as complete</label>
+      </div>
+      <ul id="todo-list" data-bind="template:{ name:'item-template',foreach: todos}">
+      </ul>
+    </section>
+    
+    <footer style="display: block;">
+      <div data-bind="visible:todos().length>0">
+        <div class="todo-count" style="color:rgb(68, 110, 187)"><b data-bind="text:todos().length"></b> items left</div>
+        <!-- ko if: doneTodos() > 0 -->
+          <a id="clear-completed" data-bind="click:clear" style="color:red">
+              Clear <span data-bind="html:countDoneText(true)"></span> <img src="~/delete.png" alt="del" style="cursor:pointer" />
+          </a>
+        <!-- /ko -->
+        <br style="clear:both"/>
+      </div>
+    </footer>
+
+</div>
+
+<script type="text/html" id="item-template">
+    <li data-bind="event:{ dblclick :$root.toggleEditMode},css : {done:done() }">
+        <div class="view" >
+          <input class="toggle" type="checkbox" data-bind="checked:done"/>
+           <label data-bind="text:title"></label>
+          <a class="destroy"></a>
+        </div>
+       @* <input class="edit" type="text" data-bind="value:title,event: { keyup: $root.editOnEnter}" />*@
+    </li>
+    </script>
+
+<!--Endf Widget Tab -->
+<!--Start For Career Tab -->
+<div id="careerTab" style="display:none;margin-left:400px">
+    <div id="border">
+        <h2 style="color:deepskyblue">Do You Have What It Takes? <span id="rightPanel">Browse Articles </span></h2>
+       
+<h4 style="color:deepskyblue">We are looking for ambitious, driven professionals who thrive <br /> in a team environment.
+     Whilst there are no absolute rules as to <br /> who can be successful in  our company, generally 
+    you'll have more <br /> chance of doing so if you can answer "Yes" to the following questions:</h4> 
+        <div class="quote">#solutions.</div>
+        <br /><span class="twitter"><img src="~/twitter_btn.png" /></span>
+           <h5 class="tickImg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An eagle eye for detail</h5>
+         <h5 class="tickImg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Spirit, drive and determination</h5>
+          <h5 class="tickImg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creativity & Development</h5>
+         <h5 class="tickImg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Learning Ability</h5>
+        
+        <br />
+        <br />
+        <h5>If you believe you have something to offer us and our clients send us an email at <a href="#">xyz@abc.com</a></h5>
+    </div>
+   
+@*<table id="tbl">
+    <thead>
+    <tr>
+
+    </tr> 
+  </thead>
+  <tbody>
+  </tbody>
+</table>*@
+    </div>
+<!--End For Career Tab -->
+
+
+
+
+<!-- Animated Transitions -->
+
+
+
+<!-- End Animated Transitions -->
+<script type="text/javascript">
+   
+    var self = this;
+    //S1:Boolean to check wheather the operation is for Edit and New Record
+    var IsNewRecord = false;
+    //Start Paging
+    self.pagesize = ko.observable(4); // The Default size of the Table.
+    self.thispage = ko.observable(0); // The current Page.
+    self.pagineationEmp = ko.observableArray(); // The declaration for storing the Paginated data.
+    //End Paging
+
+    self.Employees = ko.observableArray([]);
+    loadEmployees();
+
+    //-------------------------------------------SORTING----------------------
+ 
+
+    //-------------------------------------------SORTING--------------------------------------------
+
+
+    //------------------------TODO LIST FOR WIDGET---------------------------------------------------
+    var Todo = function (title, done, order, callback) {
+        var self = this;
+        self.title = ko.observable(title);
+        self.done = ko.observable(done);
+        self.order = order;
+        self.updateCallback = ko.computed(function () {
+            callback(self);
+            return true;
+        });
+    }
+        var self = this;
+        self.todos = ko.observableArray([]);
+        self.inputTitle = ko.observable("");
+        self.doneTodos = ko.observable(0);
+        self.markAll = ko.observable(false);
+
+        self.addOne = function () {
+            var order = self.todos().length;
+            var t = new Todo(self.inputTitle(), false, order, self.countUpdate);
+            self.todos.push(t);
+        };
+
+        self.createOnEnter = function (item, event) {
+            if (event.keyCode == 13 && self.inputTitle()) {
+                self.addOne();
+                self.inputTitle("");
+            }
+            else {
+                return true;
+            };
+        }
+
+        self.toggleEditMode = function (item, event) {
+            $(event.target).closest('li').toggleClass('editing');
+        }
+
+        self.editOnEnter = function (item, event) {
+            if (event.keyCode == 13 && item.title) {
+                item.updateCallback();
+                self.toggleEditMode(item, event);
+            } else {
+                return true;
+            };
+        }
+
+        self.markAll.subscribe(function (newValue) {
+            ko.utils.arrayForEach(self.todos(), function (item) {
+                return item.done(newValue);
+            });
+        });
+
+        self.countUpdate = function (item) {
+            var doneArray = ko.utils.arrayFilter(self.todos(), function (it) {
+                return it.done();
+            });
+            self.doneTodos(doneArray.length);
+            return true;
+        };
+
+        self.countDoneText = function (bool) {
+            var cntAll = self.todos().length;
+            var cnt = (bool ? self.doneTodos() : cntAll - self.doneTodos());
+            var text = "<span class='count'>" + cnt.toString() + "</span>";
+            text += (bool ? " completed" : " remaining");
+            text += (self.doneTodos() > 1 ? " items" : " item");
+            return text;
+        }
+
+        self.clear = function () {
+            self.todos.remove(function (item) { return item.done(); });
+        }
+
+    //-----------------------------------------------------------------------------------
+
+
+
+
+    //Start Paging cOMPLETE cODE
+    //The computed declaration for the number of display of records 
+
+    self.page = ko.computed(function () {
+        //Logic for displaying number of rows in the table
+        if (self.pagesize() == "complete") {
+            self.pagineationEmp(self.Employees.slice(0));
+        } else {
+            var pgsize = parseInt(self.pagesize(), 10),
+             fisrt = pgsize * self.thispage(),
+             last = fisrt + pgsize;
+
+            self.pagineationEmp(self.Employees.slice(fisrt, last));
+        }
+    }, self);
+
+    //The function for the total number of pages
+    self.allpages = function () {
+        var totpages = self.Employees().length / self.pagesize() || 1;
+        return Math.ceil(totpages);
+    }
+
+    //The function for Next Page
+    self.nextpage = function () {
+        if (self.thispage() < self.allpages() - 1) {
+            self.thispage(self.thispage() + 1);
+        }
+    }
+
+
+    //The function for Previous Page
+    self.previouspage = function () {
+        if (self.thispage() > 0) {
+            self.thispage(self.thispage() - 1);
+        }
+    }
+
+    //END Paging cOMPLETE cODE
+
+
+    //S2:Method to Load all Employees by making call to WEB API GET method 
+    function loadEmployees() {
+        $.ajax({
+            type: "GET",
+            url: "api/_EmployeeInfoAPI",
+            success: function (data) {
+                self.Employees(data);
+            },
+            error: function (err) {
+                alert(err.status + " <--------------->");
+            }
+        });
+
+    };
+
+    //S3:The Employee Object
+    function Employee(eno, ename, dname, desig, sal) {
+        return {
+            EmpNo: ko.observable(eno),
+            EmpName: ko.observable(ename),
+            DeptName: ko.observable(dname),
+            Designation: ko.observable(desig),
+            Salary: ko.observable(sal)
+        }
+    };
+
+
+    
+
+    //S4:The ViewModel where the Templates are initialized
+    var EmpViewModel = {
+  
+        readonlyTemplate: ko.observable("readonlyTemplate"),
+        editTemplate: ko.observable()
+    };
+
+    //S5:Method to decide the Current Template (readonlyTemplate or editTemplate)
+    EmpViewModel.currentTemplate = function (tmpl) {
+        return tmpl === this.editTemplate() ? 'editTemplate' : this.readonlyTemplate();
+    }.bind(EmpViewModel);
+
+
+    //For Saving Records------------------------
+    EmpViewModel.saveRecord = function (d) {
+        var Emp = {};
+        var valid = true;
+        msg = "";
+        Emp.EmpName = d.EmpName;
+        Emp.DeptName = d.DeptName;
+        Emp.Designation = d.Designation;
+        Emp.Salary = d.Salary;
+       
+        $.ajax({
+                type: "POST",
+                url: "api/_EmployeeInfoAPI",
+                data: Emp,
+                success: function (data) {
+                    alert("Record Added Successfully ");
+                    EmpViewModel.reset();
+          
+                    $("#txtename1").val("");
+                    $("#txtdname1").val("");
+                    $("#txtdesig1").val("");
+                    $("#txtsal1").val("");
+                    loadEmployees();
+                    $("#frm").hide();
+
+                },
+                error: function (err) {
+                    alert("Error Occures, Please Reload the Page and Try Again " + err.status);
+                    EmpViewModel.reset();
+                }
+            });
+        
+    };
+
+   
+    //End For Saving Records------------------------
+
+
+    //S7:Method to Save the Record (This is used for Edit and Add New Record)
+    EmpViewModel.saveEmployee = function (d) {
+
+        var Emp = {};
+        Emp.EmpNo = d.EmpNo;
+        Emp.EmpName = d.EmpName;
+        Emp.DeptName = d.DeptName;
+        Emp.Designation = d.Designation;
+        Emp.Salary = d.Salary;
+        //Edit the Record
+        if (IsNewRecord === false) {
+            $.ajax({
+                type: "PUT",
+                url: "api/_EmployeeInfoAPI/" + Emp.EmpNo,
+                data: Emp,
+                success: function (data) {
+                    alert("Record Updated Successfully ");
+                    EmpViewModel.reset();
+                },
+                error: function (err) {
+                    alert("Error Occures, Please Reload the Page and Try Again " + err.status);
+                    EmpViewModel.reset();
+                }
+            });
+        }
+    };
+
+    //S8:Method to Delete the Record
+    EmpViewModel.deleteEmployee = function (d) {
+
+        $.ajax({
+            type: "DELETE",
+            url: "api/_EmployeeInfoAPI/" + d.EmpNo,
+            success: function (data) {
+                alert("Record Deleted Successfully ");
+                EmpViewModel.reset();
+                loadEmployees();
+            },
+            error: function (err) {
+                alert("Error Occures, Please Reload the Page and Try Again " + err.status);
+                EmpViewModel.reset();
+            }
+        });
+    };
+
+    //S9:Method to Reset the template
+    EmpViewModel.reset = function (t) {
+        this.editTemplate("readonlyTemplate");
+    };
+
+    EmpViewModel.Cancel = function () {
+        $("#frm").hide();
+    }
+    EmpViewModel.ForContact = function () {
+        $("#Complete").hide();
+        $("#forAbout").hide();
+        $("#todoapp").hide();
+        $("#forContact").show();
+        $("#careerTab").hide();
+    };
+    EmpViewModel.ForAbout = function () {
+        $("#Complete").hide();
+        $("#forContact").hide();
+        $("#todoapp").hide();
+        $("#forAbout").show();
+        $("#careerTab").hide();
+    };
+
+    EmpViewModel.Widgets = function () {
+        $("#Complete").hide();
+        $("#forContact").hide();
+        $("#forAbout").hide();
+        $("#todoapp").show();
+        $("#careerTab").hide();
+    };
+    EmpViewModel.ForCarrier = function () {
+        $("#Complete").hide();
+        $("#forContact").hide();
+        $("#forAbout").hide();
+        $("#todoapp").hide();
+        $("#careerTab").show();
+    }
+    EmpViewModel.sendMessage = function (d) {
+        var Emp = {};
+        var valid = true;
+        msg = "";
+        Emp.Name = d.Name;
+        Emp.Email = d.Email;
+        Emp.Message = d.Message;
+        $.ajax({
+            type: "POST",
+            url: "api/SendMessageApi",
+            data: Emp,
+            success: function (data) {
+                alert("Message Send Successfully ");
+                EmpViewModel.reset();
+
+                $("#txtName").val("");
+                $("#txtEmail").val("");
+                $("#sendmessage").val("");
+
+                loadEmployees();
+                $("#frm").hide();
+
+            },
+            error: function (err) {
+                alert("Error Occures, Please Reload the Page and Try Again " + err.status);
+                EmpViewModel.reset();
+            }
+        });
+
+        /* Animated Transitions */
+
+
+    }
+
+    
+    
+    ko.applyBindings(EmpViewModel);
+</script>

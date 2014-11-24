@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "IndexNew";
+}
+
+<style>
+    .button {
+ display: inline-block;
+ outline: none;
+ cursor: pointer;
+ text-align: center;
+ text-decoration: none;
+ padding: .4em 1.1em .4em;
+ color: #fef4e9;
+ border: solid 1px #006fb9;
+ background: #1276bb;
+ }
+</style>
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+<script src="~/Scripts/knockout-3.2.0.js"></script>
+<a href="~/Scripts/jquery-1.9.1.min.map"></a>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+ EmpName: 
+   <input type="text" data-bind="value: $data.EmpName" id="txtename1" style="margin-left:8px"  /> <br /> 
+  <br />
+  
+    
+         DeptName: 
+  <input type="text" data-bind="value: $data.DeptName" id="txtdname1" style="margin-left:8px"  />
+    <br />
+  
+        <br />
+    Designation:  
+   <input type="text" data-bind="value: $data.Designation" id="txtdesig1" style="margin-left:1px"  />
+     <br />
+      
+    <br />
+        Salary: <input type="text" data-bind="value: $data.Salary" id="txtsal1" style="margin-left:37px"  />
+         <br />
+    <br />
+  
+        <input type="button" class="button" value="Save" data-bind="click: EmpViewModel.saveRecord" style="margin-left:40px" />
+
+<script type="text/javascript">
+    var self = this;
+    //S1:Boolean to check wheather the operation is for Edit and New Record
+    var IsNewRecord = false;
+
+    self.Employees = ko.observableArray([]);
+
+
+    var EmpViewModel = {
+        readonlyTemplate: ko.observable("readonlyTemplate"),
+        editTemplate: ko.observable()
+    };
+
+    EmpViewModel.saveRecord = function (d) {
+        var Emp = {};
+        Emp.EmpName = d.EmpName;
+        Emp.DeptName = d.DeptName;
+        Emp.Designation = d.Designation;
+        Emp.Salary = d.Salary;
+        $.ajax({
+            type: "POST",
+            url: "api/_EmployeeInfoAPI",
+            data: Emp,
+            success: function (data) {
+
+                alert("Record Added Successfully ");
+                
+                $("#txtename1").val("");
+                $("#txtdname1").val("");
+                $("#txtdesig1").val("");
+                $("#txtsal1").val("");
+
+            },
+            error: function (err) {
+                alert("Error Occures, Please Reload the Page and Try Again " + err.status);
+               
+            }
+        });
+    };
+    ko.applyBindings(EmpViewModel);
+    //End For Saving Records------------------------
+    </script>

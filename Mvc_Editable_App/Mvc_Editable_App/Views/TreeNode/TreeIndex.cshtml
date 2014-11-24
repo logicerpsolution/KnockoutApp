@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "TreeIndex";
+}
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style type="text/css">
+    table {
+        width: 700px;
+        border: double;
+    }
+
+    th {
+        width: 100px;
+    }
+
+    td {
+        border: double;
+        width: 100px;
+    }
+
+    input {
+        width: 100px;
+    }
+    .button {
+ display: inline-block;
+ outline: none;
+ cursor: pointer;
+ text-align: center;
+ text-decoration: none;
+ padding: .4em 1.1em .4em;
+ color: #fef4e9;
+ border: solid 1px #006fb9;
+ background: #1276bb;
+ }
+</style>
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+<script src="~/Scripts/knockout-3.2.0.js"></script>
+<a href="~/Scripts/jquery-1.9.1.min.map"></a>
+
+
+        ParentNode: <input type="text" data-bind="value: $data.ParentNode" id="txtename1" style="margin-left:8px" />  <br /> 
+         <input type="button" class="button" value="Save" data-bind="click: EmpViewModel.saveRecord" style="margin-left:40px" />
+ 
+  <br />
+
+@*<script type="text/html" id="readonlyTemplate">
+    <tr>
+        <td>
+            <span data-bind="text: EmpNo"></span>
+        </td>
+        <td>
+            <span data-bind="text: EmpName"></span>
+        </td>
+        <td>
+            <span data-bind="text: DeptName"></span>
+        </td>
+        <td>
+            <span data-bind="text: Designation"></span>
+        </td>
+        <td>
+            <span data-bind="text: Salary"></span>
+        </td>
+    </tr>
+</script>*@
+
+<script type="text/javascript">
+
+
+    var self = this;
+    self.Employees = ko.observableArray([]);
+
+    loadEmployees();
+
+    //S2:Method to Load all Employees by making call to WEB API GET method 
+    function loadEmployees() {
+        $.ajax({
+            type: "GET",
+            url: "api/TreeNodeApi/",
+            success: function (data) {
+                self.Employees(data);
+            },
+            error: function (err) {
+                alert(err.status + " <--------------->");
+            }
+        });
+
+    };
+
+    //S3:The Node Object
+    function Node(nno, cname, pname) {
+        return {
+            Id: ko.observable(nno),
+            ChildNode: ko.observable(cname),
+            ParentNode: ko.observable(pname),
+        }
+    };
+
+    //S4:The ViewModel where the Templates are initialized
+    var EmpViewModel = {
+        readonlyTemplate: ko.observable("readonlyTemplate"),
+        editTemplate: ko.observable()
+    };
+
+    //S5:Method to decide the Current Template (readonlyTemplate or editTemplate)
+    EmpViewModel.currentTemplate = function (tmpl) {
+        return tmpl === this.readonlyTemplate();
+    }.bind(EmpViewModel);
+
+    
+ //For Saving Records------------------------
+    EmpViewModel.saveRecord = function (d) {
+        var Emp = {};
+        Emp.ChildNode = d.ChildNode;
+        Emp.ParentNode = d.ParentNode;
+        $.ajax({
+            type: "POST",
+            url: "api/TreeNodeApi/",
+            data: Emp,
+            success: function (data) {
+                alert("Record Added Successfully ");
+                EmpViewModel.reset();
+                loadEmployees();
+            },
+            error: function (err) {
+                alert("Error Occures, Please Reload the Page and Try Again " + err.status);
+                EmpViewModel.reset();
+            }
+        });
+    };
+    //End For Saving Records------------------------
+
+
+   
+
+
+    //S9:Method to Reset the template
+    EmpViewModel.reset = function (t) {
+        this.editTemplate("readonlyTemplate");
+    };
+    ko.applyBindings(EmpViewModel);
+</script>
+
